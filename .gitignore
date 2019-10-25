@@ -4,10 +4,6 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
 pids
@@ -20,7 +16,6 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
-*.lcov
 
 # nyc test coverage
 .nyc_output
@@ -38,26 +33,18 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
+#node_modules folder should normally be ignored, but I'm including it for students who forget to run npm install
+# node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
 typings/
-
-# TypeScript cache
-*.tsbuildinfo
 
 # Optional npm cache directory
 .npm
 
 # Optional eslint cache
 .eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
 
 # Optional REPL history
 .node_repl_history
@@ -81,10 +68,6 @@ typings/
 # nuxt.js build output
 .nuxt
 
-# gatsby files
-.cache/
-public
-
 # vuepress build output
 .vuepress/dist
 
@@ -96,6 +79,3 @@ public
 
 # DynamoDB Local files
 .dynamodb/
-
-# TernJS port file
-.tern-port
