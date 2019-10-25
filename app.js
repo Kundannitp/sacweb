@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(session({
-    secret: "Our little secret.",
+    secret:process.env.SECRET,
     resave: false,
     saveUninitialized: false
 }));
@@ -80,11 +80,9 @@ Pname.push("Manish Kumar");
 eventdis.push("#tcf2k20 results");
 Pname.push("Rakesh Singh rajput");
 eventdis.push("#tcf2k20 results");
-var clientid = "242238692456-piu1uab0unjq00e16kpp9c8n92d1ciit.apps.googleusercontent.com";
-var clientsecret = "fO7gjkZ1QXRpOApmy7CkjNhs";
 passport.use(new GoogleStrategy({
-        clientID: "506237181176-a0hoifheivv6db1rvva4sla73nfjlhnj",
-        clientSecret: 'uBdjOS56AdRotMxvm0viVmF3',
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
         callbackURL: "http://localhost:3000/auth/google/sacweb",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
