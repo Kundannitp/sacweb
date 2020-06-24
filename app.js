@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const multer=require("multer");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const session = require('express-session');
@@ -17,6 +18,35 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+/**Creating Storage********/
+var Storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, "./Images");
+    },
+    filename: function (req, file, callback) {
+        callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+    }
+});
+
+var upload = multer({
+    storage: Storage
+}).array("imgUploader", 3);
+
+app.get("/profile",function(req,res){
+    res.render("profile");
+});
+
+app.post("/api/Upload", function (req, res) {
+    upload(req, res, function (err) {
+        if (err) {
+            return res.end("Something went wrong!");
+        }
+        return res.end("File uploaded sucessfully!.");
+    });
+});
+
+/**************************/
+
 app.use(session({
     secret:process.env.SECRET,
     resave: false,
@@ -27,8 +57,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.connect("mongodb+srv://Kundan2000:Kundan2000@@k2j-ebqyx.mongodb.net/SacWeb3", {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
+
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
@@ -45,11 +77,18 @@ const BlogsSchema = new mongoose.Schema({
     imgurl: String
 });
 
+const NoticeSchema=new mongoose.Schema({
+    name:String,
+    notice:String,
+    noticelink:String
+});
+
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
 const User = new mongoose.model("User", userSchema);
 const Blogs=new mongoose.model("Blogs",BlogsSchema);
+const Notice=new mongoose.model("Notices",NoticeSchema);
 
 passport.use(User.createStrategy());
 
@@ -72,19 +111,13 @@ var imgblog = new Array();
 var personName = new Array();
 var blogs1 = new Array();
 var blogshead = new Array();
-Pname.push("Kundan kumar Jha");
-eventdis.push("#tcf2k20 results");
-Pname.push("Prabhkirat Singh");
-eventdis.push("#tcf2k20 results");
-Pname.push("Manish Kumar");
-eventdis.push("#tcf2k20 results");
-Pname.push("Rakesh Singh rajput");
-eventdis.push("#tcf2k20 results");
+var noticelinkarr=new Array();
+//Google Developer Console Id kundannitp3316@gmail.com
 passport.use(new GoogleStrategy({
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         callbackURL: "http://localhost:3000/auth/google/sacweb",
-        userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+        // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
     function (accessToken, refreshToken, profile, cb) {
         console.log(profile);
@@ -96,26 +129,60 @@ passport.use(new GoogleStrategy({
         });
     }
 ));
-Blogs.find(function (err, blogsarr) {
-    if (err) {
-        console.log(err);
-    } else {
-        for (var i = 0; i < blogsarr.length; i++) {
-            imgblog.push(blogsarr[i].imgurl);
-            personName.push(blogsarr[i].name);
-            blogs1.push(blogsarr[i].post);
-            blogshead.push(blogsarr[i].posttitle);
-        }
-    }
-});
 
 app.get("/", function (req, res) {
         var buttontext = "SIGNIN";
         if (req.isAuthenticated()) {
             buttontext = "LOGOUT";
+            // console.log(profileuser);
+            
         } else {
             console.log("not Authenticated");
         }
+
+        Notice.find(function (err, noticearr) {
+            if (err) {
+                console.log(err);
+            } else {
+                for (var i = 0; i < noticearr.length; i++) {
+                    var j;
+                    for(j=0;j<Pname.length;j++){
+                        if (noticearr[i].name === Pname[j] && noticearr[i].notice===eventdis[j]&&noticelinkarr[j]===noticearr[i].noticelink){
+                            break;
+                        }
+                    }
+                    if(j==Pname.length){
+                        Pname.push(noticearr[i].name);
+                        eventdis.push(noticearr[i].notice);
+                        noticelinkarr.push(noticearr[i].noticelink);
+                    }
+                }
+            }
+        });
+
+        Blogs.find(function (err, blogsarr) {
+            if (err) {
+                console.log(err);
+            } else {
+                for (var i = 0; i < blogsarr.length; i++) {
+                    var j;
+                    for(j=0;j<personName.length;j++){
+                        if (imgblog[j] === blogsarr[i].imgurl && personName[j] === blogsarr[i].name && blogs1[j] === blogsarr[i].post
+                            && blogshead[j] === blogsarr[i].posttitle){
+                                break;
+                            }
+                    }
+                    if(j==personName.length){
+                        imgblog.push(blogsarr[i].imgurl);
+                        personName.push(blogsarr[i].name);
+                        blogs1.push(blogsarr[i].post);
+                        blogshead.push(blogsarr[i].posttitle);
+                    }
+                }
+            }
+        });
+
+
 
         var v = {
             proimgsrc: proimgsrc,
@@ -126,13 +193,14 @@ app.get("/", function (req, res) {
             blogimg: imgblog,
             buttontext: buttontext,
             Pname: Pname,
-            eventdis: eventdis
+            eventdis: eventdis,
+            noticelink:noticelinkarr
         }
         res.render('blogs', v);
 });
 app.get("/auth/google",
     passport.authenticate('google', {
-        scope: ["profile"]
+        scope: ['profile', 'email']
     })
 );
 
@@ -142,12 +210,36 @@ app.get("/auth/google/sacweb",
     }),
     function (req, res) {
         // Successful authentication, redirect to secrets.
-        res.redirect("/");
-    });
+        res.redirect("/profileuser");
+});
+
+app.get("/profileuser", (req, res) => {
+    res.send(profileuser);
+})
+
 app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/");
 });
+
+
+/***************Testing route*************/
+
+app.post('/testing',function(req,res){
+    var name1=req.body.name;
+    var email1=req.body.email;
+    console.log(req.body);
+    var val = {
+        name: name1,
+        email: email1
+    }
+    res.send(val);
+});
+
+app.get('/testing',function(req,res){
+    res.render('testing');
+})
+
 
 app.post("/signup", function (req, res) {
 
@@ -193,12 +285,14 @@ app.post('/writeBlog', function (req, res) {
         imgurl: "Images/SacLogo.jpg"
     });
     blogs.save();
-    imgblog.push("Images/SacLogo.jpg");
-    personName.push("Anonymous");
-    blogs1.push(req.body.post);
-    blogshead.push(req.body.posttitle);
     res.redirect('/');
 });
+
+app.get('/header',function(req,res){
+    res.render('mainbody',{
+        css:"mainbody"
+    })
+})
 
 
 app.listen(process.env.PORT||3000, function () {

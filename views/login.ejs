@@ -1,0 +1,31 @@
+    <div id="id01" class="modal1">
+
+        <div class="modal-content1 animate1">
+            <div class="imgcontainer1">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                    title="Close1 Modal1">&times;</span>
+                <img src="Images/SacLogo.jpg" alt="Logo" class="avatar1">
+            </div>
+            <div class="container1" style="align-items: center;">
+                <form action="/login" method="POST">
+                    <label for="uname"><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" name="username" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="password" required>
+
+                    <button type="submit">Login</button>
+                </form>
+                <div style="font-size: 20px; color: rgb(150, 120, 120); text-align: center;">Or</div>
+                <hr class="login_hr">
+                <a href="/auth/google" target="_parent"><img src="Images/googleimg.png" alt="" class="googleimg"></a>
+            </div>
+
+            <div class="container1" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                    class="cancelbtn1">Cancel</button>
+                <span class="psw1">No Account?<span class="signup1" onclick="document.getElementById('id02').style.display='block'
+                document.getElementById('id01').style.display='none'">SignUp</span></span>
+            </div>
+        </div>
+    </div>

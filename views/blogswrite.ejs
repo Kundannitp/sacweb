@@ -1,0 +1,25 @@
+<div id="id03" class="modal1">
+    <span onclick="document.getElementById('id03').style.display='none'" class="close3"
+        title="Close Modal">&times;</span>
+    <div class="modal-content3 animate1">
+        <div class="container3">
+            <form action="/writeBlog" method="POST">
+                <h1>BLOGS</h1>
+                <div>
+                    <img src="<%= proimgsrc %>" alt="UserImage" class="imgclass">
+                    <h2 class="h2name"><%= personname %></h2>
+                </div>
+                <p>Write your blog here...</p>
+                <hr>
+                <textarea name="posttitle" class="area" cols="50" rows="1" placeholder="heading"></textarea>
+                <textarea name="post" class="area" cols="50" rows="10"></textarea>
+                <div class="clearfix">
+                    <button type="button" onclick="document.getElementById('id03').style.display='none'"
+                        class="cancelbtn3">Cancel</button>
+                    <button type="submit" class="signupbtn3">Post</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

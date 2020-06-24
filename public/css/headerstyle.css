@@ -1,0 +1,47 @@
+
+.maindiv{
+    display: block;
+    /* background: rgb(53, 52, 52); */
+}
+
+.divdata{
+    display: inline-block;
+    width: 12.20%;
+    text-align: center;
+    height: 50%;
+    font-size: 150%;
+    padding-top: 1.5%;
+    padding-bottom:1.5% ;
+    border-bottom: 0.2px solid rgb(126, 125, 125);
+    background: #FFFFFF;
+}
+
+.imgdiv{
+    position: absolute;
+    display: inline-block;
+    width: 24.40%;
+    height: 70%;
+    color: #FFFFFF;
+    background: #800000;
+    font-size: 200%;
+    height: 18vh;
+    padding-top: 1.5%;
+    padding-bottom: 2.5%;
+    text-align: center;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+.imgdiv1{
+    border-radius: 50%;
+    height: 17vh;
+    width: 35%;
+}
+
+.divdata1{
+    border-right: 0.2px solid rgb(117, 116, 116);
+}
+
+/* .divdata2{
+    border-left: 1px solid rgb(53, 52, 52);
+} */

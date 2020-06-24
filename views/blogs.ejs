@@ -61,6 +61,7 @@
             </div>
             <div class="eventcont">
                 <% for(var i=0;i<Pname.length;i++){ %>
+                <a href="<%= noticelink[i] %>" target="blank">
                 <div class="eventsdiv">
                     <div class="eventname"><%= Pname[i] %></div>
                     <hr class="line1">
@@ -68,6 +69,7 @@
                         <%= eventdis[i] %>
                     </div>
                 </div>
+                </a>
                 <% } %>
             </div>
         </div>
@@ -75,105 +77,15 @@
     </div>
 
     <!-- loginform -->
-
-    <div id="id01" class="modal1">
-
-        <div class="modal-content1 animate1">
-            <div class="imgcontainer1">
-                <span onclick="document.getElementById('id01').style.display='none'" class="close"
-                    title="Close1 Modal1">&times;</span>
-                <img src="Images/SacLogo.jpg" alt="Logo" class="avatar1">
-            </div>
-            <div class="container1" style="align-items: center;">
-                <form action="/login" method="POST">
-                    <label for="uname"><b>Username</b></label>
-                    <input type="text" placeholder="Enter Username" name="username" required>
-
-                    <label for="psw"><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" name="password" required>
-
-                    <button type="submit">Login</button>
-                </form>
-                <div style="font-size: 20px; color: rgb(150, 120, 120); text-align: center;">Or</div>
-                <hr class="login_hr">
-                <!-- Google -->
-                <!-- <a href="/auth/google" style="text-decoration: none;" target="_self">
-                    <div id="my-signin2"></div>
-                </a> -->
-                <a href="/auth/google" target="_parent">google</a>
-            </div>
-
-            <div class="container1" style="background-color:#f1f1f1">
-                <button type="button" onclick="document.getElementById('id01').style.display='none'"
-                    class="cancelbtn1">Cancel</button>
-                <span class="psw1">No Account?<span class="signup1" onclick="document.getElementById('id02').style.display='block'
-                document.getElementById('id01').style.display='none'">SignUp</span></span>
-            </div>
-        </div>
-    </div>
+    <%- include('login'); -%>
     <!-- loginEnds -->
-
+    
     <!-- SignUpStarts -->
-
-    <div id="id02" class="modal1">
-        <span onclick="document.getElementById('id02').style.display='none'" class="close"
-            title="Close Modal">&times;</span>
-        <div class="modal-content">
-            <div class="container">
-                <div>
-                    <h1>Sign Up</h1>
-                    <p>Please fill in this form to create an account.</p>
-                    <hr>
-                </div>
-                <form action="/signup" method="POST">
-                    <label for="email"><b>Email</b></label>
-                    <input type="text" placeholder="Enter Email" name="username" required>
-
-                    <label for="psw"><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" name="password" required>
-                    <div class="clearfix">
-                        <button type="button" onclick="document.getElementById('id02').style.display='none'"
-                            class="cancelbtn">Cancel</button>
-                        <button type="submit" class="signupbtn">Sign Up</button>
-                    </div>
-                </form>
-                <div style="font-size: 20px; color: rgb(150, 120, 120); text-align: center;">Or</div>
-                <hr class="login_hr">
-                <a href="/auth/google" style="text-decoration: none;">
-                    <div class="g-signin2" data-width="250" data-height="50" data-longtitle="true"></div>
-                </a>
-            </div>
-
-        </div>
-    </div>
+    <%- include('signup'); -%>
     <!-- sign up ends -->
 
     <!-- Blogs write -->
-    <div id="id03" class="modal1">
-        <span onclick="document.getElementById('id03').style.display='none'" class="close3"
-            title="Close Modal">&times;</span>
-        <div class="modal-content3 animate1">
-            <div class="container3">
-                <form action="/writeBlog" method="POST">
-                    <h1>BLOGS</h1>
-                    <div>
-                        <img src="<%= proimgsrc %>" alt="UserImage" class="imgclass">
-                        <h2 class="h2name"><%= personname %></h2>
-                    </div>
-                    <p>Write your blog here...</p>
-                    <hr>
-                    <textarea name="posttitle" class="area" cols="50" rows="1" placeholder="heading"></textarea>
-                    <textarea name="post" class="area" cols="50" rows="10"></textarea>
-                    <div class="clearfix">
-                        <button type="button" onclick="document.getElementById('id03').style.display='none'"
-                            class="cancelbtn3">Cancel</button>
-                        <button type="submit" class="signupbtn3">Post</button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </div>
+    <%- include('blogswrite'); -%>
     <!-- Blogs ends -->
     <script>
         // Get the modal
@@ -192,34 +104,7 @@
                 modal4.style.display = "none";
             }
         }
-
-        //google
-
-        function onSuccess(googleUser) {
-            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-        }
-
-        function onFailure(error) {
-            console.log(error);
-        }
-
-        function renderButton() {
-            gapi.signin2.render('my-signin2', {
-                'scope': 'profile email',
-                'width': 240,
-                'height': 50,
-                'margin-left': 200,
-                'longtitle': true,
-                'theme': 'dark',
-                'onsuccess': onSuccess,
-                'onfailure': onFailure
-            });
-        }
-
-        //google ends
     </script>
-    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-    <!-- SignupEnds -->
 </body>
 
 </html>
